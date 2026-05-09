@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P4 Plan de Comunicación - Grupo GO5</title>
+    
+    <!-- Google Fonts Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800;900&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* =========================================================
+           1. VARIABLES & DARK LIQUID THEME
+           ========================================================= */
+        :root {
+            --bg-base: #020617; /* Deep space dark */
+            --text-title: #ffffff; 
+            --text-main: #e2e8f0; 
+            --text-muted: #94a3b8; 
+            
+            /* Paleta Neón / Liquid */
+            --neon-cyan: #06b6d4;
+            --neon-purple: #8b5cf6;
+            --neon-emerald: #10b981;
+            --neon-pink: #ec4899;
+            --neon-blue: #3b82f6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden; 
+            width: 100vw;
+            height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* =========================================================
+           2. FONDO LÍQUIDO NEÓN & CURSOR
+           ========================================================= */
+        .liquid-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -3; overflow: hidden;
+            background: #020617;
+        }
+
+        .gas-orb {
+            position: absolute; border-radius: 50%; filter: blur(120px);
+            opacity: 0.7; mix-blend-mode: screen;
+            animation: float-gas 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .gas-orb.cyan { background: rgba(6, 182, 212, 0.4); width: 50vw; height: 50vw; top: -10%; left: -10%; }
+        .gas-orb.purple { background: rgba(139, 92, 246, 0.4); width: 45vw; height: 45vw; bottom: -10%; right: -5%; animation-delay: -5s; }
+        .gas-orb.emerald { background: rgba(16, 185, 129, 0.3); width: 40vw; height: 40vw; top: 40%; left: 30%; animation-delay: -10s; }
+
+        @keyframes float-gas {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(5%, 10%) scale(1.1) rotate(5deg); }
+            100% { transform: translate(-5%, -5%) scale(0.9) rotate(-5deg); }
+        }
+
+        .cursor-glow {
+            position: fixed; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+            border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%);
+            z-index: -1; mix-blend-mode: overlay;
+        }
+
+        /* =========================================================
+           3. MOTOR DE PRESENTACIÓN & CANVAS DE CRISTAL
+           ========================================================= */
+        .presentation-deck {
+            position: relative; width: 100vw; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            perspective: 2000px; padding: 40px;
+        }
+
+        .slide {
+            position: absolute; width: 100%; max-width: 1400px; height: 90vh; max-height: 850px;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1; opacity: 0; pointer-events: none;
+            transform: scale(0.9) translateZ(-200px) rotateY(10deg);
+            filter: blur(20px);
+            transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .slide.active {
+            opacity: 1; pointer-events: auto; z-index: 10;
+            transform: scale(1) translateZ(0) translateX(0) rotateY(0);
+            filter: blur(0);
+        }
+
+        .glass-board {
+            width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
+            border-radius: 40px; 
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(255,255,255,0.02);
+            padding: 60px 80px;
+            display: flex; flex-direction: column; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 20px; align-items: center; z-index: 100;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px);
+            padding: 10px 30px; border-radius: 50px; 
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .btn-nav {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;
+            width: 45px; height: 45px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s; font-size: 18px; outline: none;
+        }
+        .btn-nav:hover { background: #fff; color: #000; transform: scale(1.1); box-shadow: 0 0 20px rgba(255,255,255,0.5);}
+        .slide-counter { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #fff; letter-spacing: 2px; font-size: 14px; min-width: 60px; text-align: center; }
+
+        /* =========================================================
+           4. TIPOGRAFÍA Y ESTILOS GLOBALES
+           ========================================================= */
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; margin: 0; color: var(--text-title); line-height: 1.2; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        p, li, td, th { line-height: 1.6; color: var(--text-main); font-weight: 300; }
+
+        .title-glow {
+            background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-emerald) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(6, 182, 212, 0.3);
+        }
+
+        .slide-title { font-size: 46px; font-weight: 800; margin-bottom: 40px; position: relative; letter-spacing: -1px; display: inline-block; }
+        .slide-title::after {
+            content: ''; position: absolute; bottom: -15px; left: 0; width: 60px; height: 5px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple)); border-radius: 3px;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+        }
+        .prefix { color: var(--neon-cyan); font-weight: 900; margin-right: 15px; text-shadow: 0 0 20px rgba(6, 182, 212, 0.5); }
+
+        /* =========================================================
+           5. TARJETAS 3D Y EFECTOS LIQUID GLASS
+           ========================================================= */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; align-items: center;}
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; width: 100%; }
+
+        .tilt-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px; 
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease-out, border-color 0.3s;
+            will-change: transform;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tilt-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.3s; pointer-events: none;
+        }
+
+        .tilt-card:hover { border-color: rgba(6, 182, 212, 0.4); box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 30px rgba(6, 182, 212, 0.1); }
+        .tilt-card:hover::before { opacity: 1; }
+
+        .tilt-content { transform: translateZ(30px); }
+
+        .icon-glass {
+            width: 70px; height: 70px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; margin-bottom: 25px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3), inset 0 0 15px rgba(255,255,255,0.05);
+        }
+
+        .color-cyan { color: var(--neon-cyan); text-shadow: 0 0 15px rgba(6,182,212,0.4); }
+        .color-purple { color: var(--neon-purple); text-shadow: 0 0 15px rgba(139,92,246,0.4); }
+        .color-emerald { color: var(--neon-emerald); text-shadow: 0 0 15px rgba(16,185,129,0.4); }
+
+        /* Imágenes Premium */
+        .img-glass {
+            border-radius: 24px; overflow: hidden; height: 100%; min-height: 400px;
+            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .img-glass img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9) contrast(1.1); transition: transform 0.8s;}
+        .img-glass:hover img { transform: scale(1.05); }
+        .img-glass::after { content:''; position:absolute; inset:0; box-shadow: inset 0 0 30px rgba(0,0,0,0.8); pointer-events: none; }
+
+        /* Listas */
+        .glass-list { list-style: none; padding: 0; }
+        .glass-list li {
+            position: relative; padding: 20px 20px 20px 60px; margin-bottom: 15px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px; font-size: 18px; transition: 0.3s;
+        }
+        .glass-list li:hover { background: rgba(255,255,255,0.08); transform: translateX(10px); }
+        .glass-list i { position: absolute; left: 20px; top: 22px; color: var(--neon-cyan); font-size: 20px; filter: drop-shadow(0 0 8px rgba(6,182,212,0.5)); }
+
+        /* Tablas Neón */
+        .neon-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        .neon-table th, .neon-table td { padding: 20px 25px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .neon-table th { color: var(--neon-cyan); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; background: rgba(0,0,0,0.2); }
+        .neon-table tr:last-child td { border-bottom: none; }
+        .neon-table tbody tr { transition: 0.3s; }
+        .neon-table tbody tr:hover { background: rgba(255,255,255,0.05); transform: scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 12px; }
+        .neon-table tbody tr:hover td:first-child { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+        .neon-table tbody tr:hover td:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+
+        /* Animaciones Stagger */
+        .stagger { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        .slide.active .stagger { opacity: 1; transform: translateY(0); }
+        .slide.active .delay-1 { transition-delay: 0.1s; }
+        .slide.active .delay-2 { transition-delay: 0.2s; }
+        .slide.active .delay-3 { transition-delay: 0.3s; }
+        .slide.active .delay-4 { transition-delay: 0.4s; }
+    </style>
+</head>
+<body>
+
+    <!-- FONDO LÍQUIDO LUMINOSO -->
+    <div class="liquid-bg"></div>
+    <div class="gas-orb cyan"></div>
+    <div class="gas-orb purple"></div>
+    <div class="gas-orb emerald"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    
+    <!-- CONTROLES -->
+    <div class="controls">
+        <button class="btn-nav" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+        <span class="slide-counter" id="counter">1 / 15</span>
+        <button class="btn-nav" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <!-- MOTOR DE DIAPOSITIVAS -->
+    <div class="presentation-deck" id="deck">
+
+        <!-- SLIDE 1: Portada -->
+        <div class="slide" id="slide-1">
+            <div class="glass-board" style="align-items: center; text-align: center;">
+                <div class="stagger" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); padding: 12px 40px; border-radius: 50px; color: #fff; font-weight: 800; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.1);">
+                    Grupo GO5
+                </div>
+                <h1 class="stagger delay-1 title-glow" style="font-size: 85px; margin-bottom: 30px; line-height: 1.1;">
+                    <span style="color:#fff; text-shadow:none;">P4</span> Plan de Comunicación<br>y Posicionamiento
+                </h1>
+                <div class="stagger delay-2" style="width: 100px; height: 5px; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple)); margin: 0 auto 40px auto; border-radius: 3px; box-shadow: 0 0 20px rgba(139,92,246,0.5);"></div>
+                <p class="stagger delay-3" style="font-size: 24px; font-weight: 300; max-width: 900px; color: var(--text-muted); line-height: 1.6;">
+                    <strong style="color: #fff; font-weight: 600;">PROYECTO</strong> Estudio de mercado Internacional para expandir mis Ventas.
+                </p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: Índice -->
+        <div class="slide" id="slide-2">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> Índice Estratégico</h2>
+                <div class="grid-2 stagger delay-1">
+                    <div class="tilt-card">
+                        <div class="tilt-content">
+                            <div class="icon-glass color-cyan"><i class="fa-solid fa-chess-knight"></i></div>
+                            <h3 style="font-size: 32px; margin-bottom: 25px;">Fase Estratégica</h3>
+                            <ul class="glass-list">
+                                <li><i class="fa-solid fa-chevron-right"></i> Contexto y Oportunidad en Chile</li>
+                                <li><i class="fa-solid fa-chevron-right"></i> Barreras de Adopción</li>
+                                <li><i class="fa-solid fa-chevron-right"></i> Insight y Propuesta de Valor</li>
+                                <li><i class="fa-solid fa-chevron-right"></i> Posicionamiento de Marca</li>
+                                <li><i class="fa-solid fa-chevron-right"></i> Público Objetivo (B2C & B2B)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tilt-card">
+                        <div class="tilt-content">
+                            <div class="icon-glass color-purple"><i class="fa-solid fa-rocket"></i></div>
+                            <h3 style="font-size: 32px; margin-bottom: 25px;">Fase Táctica</h3>
+                            <ul class="glass-list">
+                                <li><i class="fa-solid fa-chevron-right"></i> Embudo de Comunicación</li>
+                                <li><i class="fa-solid fa-chevron-right"></i> Ecosistema Digital y Offline</li>
+                                <li><i class="fa-solid fa-chevron-right"></i> Diferenciador: Eco-Bonus 360</li>
+                                <li><i class="fa-solid fa-chevron-right"></i> Cronograma de Lanzamiento</li>
+                                <li><i class="fa-solid fa-chevron-right"></i> Medición y KPIs</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: Contexto -->
+        <div class="slide" id="slide-3">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> El Reto y la Oportunidad</h2>
+                <div class="grid-2 stagger delay-1">
+                    <div>
+                        <h3 style="font-size: 42px; margin-bottom: 30px; line-height: 1.2;">Chile: El escenario ideal para la <span class="color-cyan">electromovilidad</span>.</h3>
+                        <p style="font-size: 20px; margin-bottom: 30px;">Nuestra incursión en el mercado chileno no se basa en vender simple innovación, sino en ofrecer una transición ecológica realista y económicamente viable.</p>
+                        <div class="tilt-card" style="padding: 25px; border-left: 4px solid var(--neon-cyan);">
+                            <p style="font-style: italic; margin: 0; font-size: 18px; color: #fff;">"El consumidor chileno está preparado para el cambio, pero exige garantías de autonomía, reducción de costos operativos y un respaldo tecnológico absoluto."</p>
+                        </div>
+                    </div>
+                    <div class="img-glass">
+                        <img src="https://images.unsplash.com/photo-1593941707882-a5bba14938cb?auto=format&fit=crop&q=80&w=1200" alt="SUV Eléctrico en Ciudad">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Barreras -->
+        <div class="slide" id="slide-4">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> Barreras de Adopción</h2>
+                <p class="stagger delay-1" style="font-size: 22px; margin-bottom: 40px; color: var(--text-muted);">Para posicionarnos, primero debemos neutralizar los temores históricos.</p>
+                <div class="grid-4 stagger delay-2">
+                    <div class="tilt-card" style="padding: 30px;">
+                        <div class="tilt-content">
+                            <div class="icon-glass" style="color: #ef4444;"><i class="fa-solid fa-tags"></i></div>
+                            <h3 style="font-size: 20px; margin-bottom: 15px;">Precio Inicial</h3>
+                            <p style="font-size: 15px;">Percepción de costo prohibitivo. Superable demostrando el Coste Total de Propiedad (TCO).</p>
+                        </div>
+                    </div>
+                    <div class="tilt-card" style="padding: 30px;">
+                        <div class="tilt-content">
+                            <div class="icon-glass" style="color: #ef4444;"><i class="fa-solid fa-charging-station"></i></div>
+                            <h3 style="font-size: 20px; margin-bottom: 15px;">Ansiedad de Carga</h3>
+                            <p style="font-size: 15px;">Incertidumbre sobre la red pública (SEC) y el impacto en trayectos largos.</p>
+                        </div>
+                    </div>
+                    <div class="tilt-card" style="padding: 30px;">
+                        <div class="tilt-content">
+                            <div class="icon-glass" style="color: #ef4444;"><i class="fa-solid fa-car-battery"></i></div>
+                            <h3 style="font-size: 20px; margin-bottom: 15px;">Vida de Batería</h3>
+                            <p style="font-size: 15px;">Desconocimiento sobre degradación tecnológica y coste de reemplazo.</p>
+                        </div>
+                    </div>
+                    <div class="tilt-card" style="padding: 30px;">
+                        <div class="tilt-content">
+                            <div class="icon-glass" style="color: #ef4444;"><i class="fa-solid fa-wrench"></i></div>
+                            <h3 style="font-size: 20px; margin-bottom: 15px;">Miedo Postventa</h3>
+                            <p style="font-size: 15px;">Dudas sobre disponibilidad de mecánicos y valor de reventa en el futuro.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: Insight -->
+        <div class="slide" id="slide-5">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> Insight Estratégico</h2>
+                <h3 class="stagger delay-1" style="font-size: 34px; margin-bottom: 50px; text-align: center; font-weight: 400; line-height: 1.4;">
+                    La sostenibilidad masiva ocurre cuando se traduce en<br><strong class="title-glow">beneficios individuales medibles.</strong>
+                </h3>
+                <div class="grid-3 stagger delay-2">
+                    <div class="tilt-card" style="text-align: center; padding: 40px 30px;">
+                        <div class="tilt-content">
+                            <div class="icon-glass color-emerald" style="margin: 0 auto 20px auto;"><i class="fa-solid fa-leaf"></i></div>
+                            <h3 style="font-size: 24px; margin-bottom: 15px;">Tangible</h3>
+                            <p style="font-size: 16px;">Cero restricciones de movilidad urbana, menos ruido y conducción suave diaria.</p>
+                        </div>
+                    </div>
+                    <div class="tilt-card" style="text-align: center; padding: 40px 30px; border-color: rgba(6,182,212,0.5); box-shadow: 0 0 30px rgba(6,182,212,0.2);">
+                        <div class="tilt-content">
+                            <div class="icon-glass color-cyan" style="margin: 0 auto 20px auto; transform: scale(1.2);"><i class="fa-solid fa-calculator"></i></div>
+                            <h3 style="font-size: 24px; margin-bottom: 15px; color: var(--neon-cyan);">Financiero</h3>
+                            <p style="font-size: 16px; color:#fff;">El argumento no es "salvar el planeta", es salvar tu bolsillo. Ahorro drástico en combustible.</p>
+                        </div>
+                    </div>
+                    <div class="tilt-card" style="text-align: center; padding: 40px 30px;">
+                        <div class="tilt-content">
+                            <div class="icon-glass color-purple" style="margin: 0 auto 20px auto;"><i class="fa-solid fa-shield-halved"></i></div>
+                            <h3 style="font-size: 24px; margin-bottom: 15px;">Confiable</h3>
+                            <p style="font-size: 16px;">Acompañamiento desde la instalación del wallbox hasta garantías de batería de 8 años.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: Posicionamiento -->
+        <div class="slide" id="slide-6">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> Posicionamiento de Marca</h2>
+                <div class="grid-2 stagger delay-1">
+                    <div class="tilt-card" style="background: linear-gradient(180deg, rgba(6,182,212,0.1) 0%, rgba(15,23,42,0) 100%);">
+                        <div class="tilt-content">
+                            <h3 style="font-size: 36px; margin-bottom: 20px; color: var(--neon-cyan);">El Espacio a Ocupar</h3>
+                            <p style="font-size: 24px; color: #fff; font-weight: 700; margin-bottom: 25px; line-height: 1.4;">"Movilidad eléctrica inteligente y de prestigio accesible."</p>
+                            <p style="font-size: 18px; margin-bottom: 15px;">Nos alejamos de la guerra de precios del low-cost asiático y de la exclusividad inalcanzable.</p>
+                            <p style="font-size: 18px;">Somos la opción europea, segura y tecnológicamente avanzada para la nueva clase media-alta chilena.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 32px; margin-bottom: 30px;">Pilares de Marca</h3>
+                        <ul class="glass-list">
+                            <li><i class="fa-solid fa-lightbulb"></i> <strong style="color:#fff;">Innovación Útil:</strong> Tecnología enfocada en el confort real.</li>
+                            <li><i class="fa-solid fa-magnifying-glass"></i> <strong style="color:#fff;">Transparencia:</strong> Datos claros sobre autonomía en tráfico de Santiago.</li>
+                            <li><i class="fa-solid fa-gem"></i> <strong style="color:#fff;">Diseño Sofisticado:</strong> Estética moderna que proyecta estatus sin ser ostentosa.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Target -->
+        <div class="slide" id="slide-7">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> Público Objetivo Prioritario</h2>
+                <div class="grid-2 stagger delay-1" style="grid-template-columns: 400px 1fr;">
+                    <div class="img-glass" style="border-radius: 50%; height: 400px; border: 5px solid rgba(6,182,212,0.5); box-shadow: 0 0 40px rgba(6,182,212,0.3);">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800" alt="Profesional Urbano">
+                    </div>
+                    <div>
+                        <h3 style="font-size: 45px; margin-bottom: 10px; color: var(--neon-cyan);">Profesional Urbano & Tech</h3>
+                        <p style="font-size: 20px; color: var(--neon-purple); font-weight: 700; margin-bottom: 30px; letter-spacing: 2px; text-transform: uppercase;">Target Primario (B2C)</p>
+                        
+                        <div class="tilt-card" style="padding: 30px;">
+                            <div class="tilt-content">
+                                <ul style="list-style: none; padding: 0;">
+                                    <li style="margin-bottom: 15px;"><strong style="color:#fff;">Demografía:</strong> 30 a 50 años. NSE ABC1 y C1a.</li>
+                                    <li style="margin-bottom: 15px;"><strong style="color:#fff;">Motivación:</strong> Actualizar estatus con un vehículo de modernidad y conciencia.</li>
+                                    <li style="margin-bottom: 15px;"><strong style="color:#fff;">Comportamiento:</strong> Racionales. Investigan en YouTube y calculan el ROI.</li>
+                                    <li><strong style="color:#fff;">Dolor principal:</strong> El tráfico diario de Santiago y el costo de la gasolina de 97 octanos.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: Expansión -->
+        <div class="slide" id="slide-8">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> Expansión Geográfica</h2>
+                <div class="grid-2 stagger delay-1" style="align-items: center; justify-items: center;">
+                    <div style="position: relative; width: 400px; height: 400px;">
+                        <!-- Concepto visual de radar/mapa -->
+                        <div style="position:absolute; inset:0; border-radius:50%; border:2px dashed rgba(6,182,212,0.3); animation: spin 20s linear infinite;"></div>
+                        <div style="position:absolute; inset:10%; border-radius:50%; border:2px dashed rgba(139,92,246,0.4); animation: spin 15s linear infinite reverse;"></div>
+                        <div style="position:absolute; inset:20%; border-radius:50%; background: radial-gradient(circle, rgba(16,185,129,0.2), transparent); box-shadow: 0 0 50px rgba(16,185,129,0.4);"></div>
+                        <i class="fa-solid fa-location-dot" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:50px; color:#fff; text-shadow: 0 0 20px var(--neon-cyan);"></i>
+                    </div>
+                    <div style="width: 100%;">
+                        <ul class="glass-list">
+                            <li><i class="fa-solid fa-1"></i> <strong style="color:#fff; font-size:22px;">Fase 1: Santiago R.M. (40%)</strong><br>Epicentro del poder adquisitivo y red SEC.</li>
+                            <li><i class="fa-solid fa-2" style="color:var(--neon-purple);"></i> <strong style="color:#fff; font-size:22px;">Fase 2: Valparaíso / Viña (25%)</strong><br>Expansión natural costa central.</li>
+                            <li><i class="fa-solid fa-3" style="color:var(--neon-emerald);"></i> <strong style="color:#fff; font-size:22px;">Fase 3: Concepción (15%)</strong><br>Polo industrial y corporativo B2B.</li>
+                            <li><i class="fa-solid fa-4" style="color:#ec4899;"></i> <strong style="color:#fff; font-size:22px;">Fase 4: Resto del país (20%)</strong><br>Antofagasta y zonas mineras.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
+        </div>
+
+        <!-- SLIDE 9: Embudo -->
+        <div class="slide" id="slide-9">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> Embudo de Comunicación</h2>
+                <div class="stagger delay-1" style="width: 100%; border-radius: 20px; overflow: hidden; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                    <table class="neon-table">
+                        <thead>
+                            <tr>
+                                <th>Etapa Funnel</th>
+                                <th>Mensaje Core (Copywriting)</th>
+                                <th>KPI Principal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong style="color:#fff;">1. Alcance</strong></td>
+                                <td>"El futuro ya está en Chile. Conduce la nueva era."</td>
+                                <td>Impresiones, CTR en RRSS.</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color:var(--neon-cyan);">2. Interés</strong></td>
+                                <td>"Conduce más, gasta menos. Calcula tu ahorro."</td>
+                                <td>Tráfico Web, Uso de Calculadora.</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color:var(--neon-purple);">3. Decisión</strong></td>
+                                <td>"Siente la diferencia. Reserva tu Test Drive."</td>
+                                <td>Volumen de Leads, CPL.</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color:var(--neon-emerald);">4. Acción</strong></td>
+                                <td>"Estrena tu eléctrico con carga incluida."</td>
+                                <td>Tasa de conversión a Venta.</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color:#ec4899;">5. Retención</strong></td>
+                                <td>"Únete a Ruta Cero y lidera la comunidad."</td>
+                                <td>NPS, Programa Referidos.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: Ecosistema Digital -->
+        <div class="slide" id="slide-10">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> Ecosistema Digital</h2>
+                <p class="stagger delay-1" style="font-size: 22px; margin-bottom: 40px; color: var(--text-muted);">Generación de demanda altamente segmentada para maximizar ROI.</p>
+                <div class="grid-3 stagger delay-2">
+                    <div class="tilt-card" style="padding: 40px 30px;">
+                        <div class="tilt-content">
+                            <div class="icon-glass color-cyan"><i class="fa-solid fa-laptop-code"></i></div>
+                            <h3 style="font-size: 24px; margin-bottom: 15px;">Hub Web & SEO</h3>
+                            <p style="font-size: 16px;">Sala de ventas virtual con configurador 3D y calculadora TCO interactiva para captar reservas.</p>
+                        </div>
+                    </div>
+                    <div class="tilt-card" style="padding: 40px 30px;">
+                        <div class="tilt-content">
+                            <div class="icon-glass color-purple"><i class="fa-solid fa-crosshairs"></i></div>
+                            <h3 style="font-size: 24px; margin-bottom: 15px;">Performance Ads</h3>
+                            <p style="font-size: 16px;">Google Search (intención directa), Meta Ads (retargeting visual) y LinkedIn Ads (flotas B2B).</p>
+                        </div>
+                    </div>
+                    <div class="tilt-card" style="padding: 40px 30px;">
+                        <div class="tilt-content">
+                            <div class="icon-glass color-emerald"><i class="fa-brands fa-youtube"></i></div>
+                            <h3 style="font-size: 24px; margin-bottom: 15px;">Video & App</h3>
+                            <p style="font-size: 16px;">YouTube con pruebas de conducción en Santiago. App móvil para fidelización y control de carga.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: Offline -->
+        <div class="slide" id="slide-11">
+            <div class="glass-board" style="padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0;">
+                <div style="padding: 80px; display: flex; flex-direction: column; justify-content: center; z-index: 2;">
+                    <h2 class="slide-title stagger"><span class="prefix">P4</span> Experiencia Offline</h2>
+                    <h3 class="stagger delay-1" style="font-size: 36px; margin-bottom: 25px; color: var(--neon-cyan); line-height: 1.2;">La tecnología se entiende cuando se conduce.</h3>
+                    <p class="stagger delay-2" style="font-size: 18px; margin-bottom: 30px;">El canal digital atrae, pero el producto físico convierte. Eliminamos el escepticismo mediante inmersión total.</p>
+                    <ul class="glass-list stagger delay-3">
+                        <li><i class="fa-solid fa-car"></i> <strong style="color:#fff;">Boutiques Urbanas:</strong> Pop-ups en distritos financieros.</li>
+                        <li><i class="fa-solid fa-bolt"></i> <strong style="color:#fff;">Alianzas de Carga:</strong> Branding en Copec Voltex o Enel X.</li>
+                        <li><i class="fa-solid fa-calendar-check"></i> <strong style="color:#fff;">Test Drive VIP:</strong> Servicio a domicilio para maximizar cierre.</li>
+                    </ul>
+                </div>
+                <div class="stagger delay-2" style="position: relative; height: 100%;">
+                    <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1200" alt="Interior EV Moderno" style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8);">
+                    <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15, 23, 42, 1) 0%, transparent 50%);"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: Eco-Bonus -->
+        <div class="slide" id="slide-12">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> Diferenciador: Eco-Bonus 360</h2>
+                <div class="grid-2 stagger delay-1">
+                    <div class="tilt-card" style="padding: 30px;">
+                        <div class="tilt-content" style="display: flex; gap: 20px; align-items: flex-start;">
+                            <div class="icon-glass color-cyan" style="flex-shrink: 0;"><i class="fa-solid fa-house-chimney-medical"></i></div>
+                            <div>
+                                <h3 style="font-size: 22px; margin-bottom: 10px;">Wallbox Residencial</h3>
+                                <p style="font-size: 15px;">Cargador y certificación SEC de instalación incluidos en financiación.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tilt-card" style="padding: 30px;">
+                        <div class="tilt-content" style="display: flex; gap: 20px; align-items: flex-start;">
+                            <div class="icon-glass color-purple" style="flex-shrink: 0;"><i class="fa-solid fa-chart-pie"></i></div>
+                            <div>
+                                <h3 style="font-size: 22px; margin-bottom: 10px;">Reporte Emisiones</h3>
+                                <p style="font-size: 15px;">Informes mensuales en la App sobre CO2 ahorrado (equivalente árboles).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tilt-card" style="padding: 30px;">
+                        <div class="tilt-content" style="display: flex; gap: 20px; align-items: flex-start;">
+                            <div class="icon-glass color-emerald" style="flex-shrink: 0;"><i class="fa-solid fa-shield-check"></i></div>
+                            <div>
+                                <h3 style="font-size: 22px; margin-bottom: 10px;">Mantenimiento Fijo</h3>
+                                <p style="font-size: 15px;">Plan simplificado a costo cerrado, aprovechando el 40% menos de piezas móviles.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tilt-card" style="padding: 30px;">
+                        <div class="tilt-content" style="display: flex; gap: 20px; align-items: flex-start;">
+                            <div class="icon-glass" style="color: #ec4899; flex-shrink: 0;"><i class="fa-solid fa-users-viewfinder"></i></div>
+                            <div>
+                                <h3 style="font-size: 22px; margin-bottom: 10px;">Comunidad Ruta Cero</h3>
+                                <p style="font-size: 15px;">Beneficios exclusivos en accesorios o recarga por referir nuevos clientes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: Cronograma -->
+        <div class="slide" id="slide-13">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> Cronograma de Implantación</h2>
+                <div class="stagger delay-1" style="position: relative; width: 100%; height: 300px; margin-top: 50px; display: flex; align-items: center; justify-content: space-between;">
+                    <!-- Linea de tiempo Neon -->
+                    <div style="position: absolute; top: 50%; left: 5%; right: 5%; height: 4px; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-emerald), #ec4899); transform: translateY(-50%); box-shadow: 0 0 20px rgba(255,255,255,0.5); border-radius: 2px;"></div>
+                    
+                    <!-- Nodos -->
+                    <div style="position: relative; z-index: 2; width: 22%; text-align: center;">
+                        <div style="width: 30px; height: 30px; background: #000; border: 6px solid var(--neon-cyan); border-radius: 50%; margin: 0 auto; box-shadow: 0 0 20px var(--neon-cyan); transition: 0.3s; cursor:pointer;" onmouseover="this.style.transform='scale(1.5)'" onmouseout="this.style.transform='scale(1)'"></div>
+                        <div class="tilt-card" style="padding: 20px; margin-top: 30px;">
+                            <h4 style="color: var(--neon-cyan); font-size: 20px; margin-bottom: 5px;">Q1 Lanzamiento</h4>
+                            <p style="font-size: 14px;">Campaña masiva, PR y captación Early Adopters.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative; z-index: 2; width: 22%; text-align: center;">
+                        <div class="tilt-card" style="padding: 20px; margin-bottom: 30px;">
+                            <h4 style="color: var(--neon-purple); font-size: 20px; margin-bottom: 5px;">Q2 Experiencia</h4>
+                            <p style="font-size: 14px;">Boutiques, Test Drives y despliegue Calculadora TCO.</p>
+                        </div>
+                        <div style="width: 30px; height: 30px; background: #000; border: 6px solid var(--neon-purple); border-radius: 50%; margin: 0 auto; box-shadow: 0 0 20px var(--neon-purple); transition: 0.3s; cursor:pointer;" onmouseover="this.style.transform='scale(1.5)'" onmouseout="this.style.transform='scale(1)'"></div>
+                    </div>
+                    
+                    <div style="position: relative; z-index: 2; width: 22%; text-align: center;">
+                        <div style="width: 30px; height: 30px; background: #000; border: 6px solid var(--neon-emerald); border-radius: 50%; margin: 0 auto; box-shadow: 0 0 20px var(--neon-emerald); transition: 0.3s; cursor:pointer;" onmouseover="this.style.transform='scale(1.5)'" onmouseout="this.style.transform='scale(1)'"></div>
+                        <div class="tilt-card" style="padding: 20px; margin-top: 30px;">
+                            <h4 style="color: var(--neon-emerald); font-size: 20px; margin-bottom: 5px;">Q3 Conversión</h4>
+                            <p style="font-size: 14px;">Retargeting agresivo, Promos y prospección B2B.</p>
+                        </div>
+                    </div>
+
+                    <div style="position: relative; z-index: 2; width: 22%; text-align: center;">
+                        <div class="tilt-card" style="padding: 20px; margin-bottom: 30px;">
+                            <h4 style="color: #ec4899; font-size: 20px; margin-bottom: 5px;">Q4 Fidelización</h4>
+                            <p style="font-size: 14px;">Comunidad Ruta Cero, referidos y medición NPS.</p>
+                        </div>
+                        <div style="width: 30px; height: 30px; background: #000; border: 6px solid #ec4899; border-radius: 50%; margin: 0 auto; box-shadow: 0 0 20px #ec4899; transition: 0.3s; cursor:pointer;" onmouseover="this.style.transform='scale(1.5)'" onmouseout="this.style.transform='scale(1)'"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: KPIs -->
+        <div class="slide" id="slide-14">
+            <div class="glass-board">
+                <h2 class="slide-title stagger"><span class="prefix">P4</span> KPIs y Metas</h2>
+                
+                <div class="grid-2 stagger delay-1" style="margin-bottom: 40px; gap: 20px;">
+                    <div class="tilt-card" style="text-align: center; border-top: 4px solid var(--neon-cyan);">
+                        <h3 style="font-size: 70px; color: #fff; line-height: 1; margin-bottom: 10px; text-shadow: 0 0 30px var(--neon-cyan);">&lt; 40€</h3>
+                        <p style="font-size: 18px; font-weight: 700; color: var(--neon-cyan); text-transform: uppercase;">Coste por Lead (CPL)</p>
+                    </div>
+                    <div class="tilt-card" style="text-align: center; border-top: 4px solid var(--neon-purple);">
+                        <h3 style="font-size: 70px; color: #fff; line-height: 1; margin-bottom: 10px; text-shadow: 0 0 30px var(--neon-purple);">&gt; 50</h3>
+                        <p style="font-size: 18px; font-weight: 700; color: var(--neon-purple); text-transform: uppercase;">Satisfacción (NPS)</p>
+                    </div>
+                </div>
+
+                <div class="stagger delay-2" style="display: flex; flex-direction: column; gap: 25px;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span style="flex: 0 0 250px; font-weight: 700; color:#fff; font-size: 18px; text-align: right;">MQLs Objetivo (2,000)</span>
+                        <div style="flex-grow: 1; height: 30px; background: rgba(0,0,0,0.5); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="width: 100%; height: 100%; background: linear-gradient(90deg, transparent, var(--neon-cyan)); box-shadow: 0 0 20px var(--neon-cyan);"></div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span style="flex: 0 0 250px; font-weight: 700; color:#fff; font-size: 18px; text-align: right;">Tasa Test Drive (20%)</span>
+                        <div style="flex-grow: 1; height: 30px; background: rgba(0,0,0,0.5); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="width: 35%; height: 100%; background: linear-gradient(90deg, transparent, var(--neon-purple)); box-shadow: 0 0 20px var(--neon-purple);"></div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span style="flex: 0 0 250px; font-weight: 700; color:#fff; font-size: 18px; text-align: right;">Cierre Ventas (70 u.)</span>
+                        <div style="flex-grow: 1; height: 30px; background: rgba(0,0,0,0.5); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="width: 15%; height: 100%; background: linear-gradient(90deg, transparent, var(--neon-emerald)); box-shadow: 0 0 20px var(--neon-emerald);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: Conclusión -->
+        <div class="slide" id="slide-15">
+            <div class="glass-board" style="text-align: center; display: flex; align-items: center; justify-content: center;">
+                <div class="tilt-card" style="padding: 80px 60px; background: rgba(15,23,42,0.6); width: 100%;">
+                    <div class="tilt-content">
+                        <h1 class="stagger title-glow" style="font-size: 75px; margin-bottom: 30px;">Transición Inteligente</h1>
+                        <p class="stagger delay-1" style="font-size: 28px; color: #fff; max-width: 900px; margin: 0 auto 50px auto; font-weight: 300; line-height: 1.5;">
+                            "No vendemos vehículos, aportamos certidumbre, ahorro demostrable y acompañamiento a un mercado chileno listo para evolucionar."
+                        </p>
+                        <div class="stagger delay-2" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(6,182,212,0.4); padding: 15px 40px; border-radius: 50px; display: inline-block; box-shadow: 0 0 30px rgba(6,182,212,0.2);">
+                            <p style="margin: 0; font-size: 20px; color: var(--neon-cyan); font-weight: 800; letter-spacing: 3px;">GRUPO GO5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT DEL MOTOR, NAVEGACIÓN Y EFECTOS 3D -->
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const counter = document.getElementById('counter');
+        const cursorGlow = document.getElementById('cursorGlow');
+        let currentSlide = 0;
+
+        // Mostrar Slide Inicial
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                if(index === currentSlide) {
+                    slide.className = 'slide active';
+                } else if(index < currentSlide) {
+                    slide.className = 'slide';
+                    slide.style.transform = 'scale(0.8) translateZ(-300px) rotateY(-10deg)';
+                } else {
+                    slide.className = 'slide';
+                    slide.style.transform = 'scale(1.1) translateZ(100px) rotateY(10deg)';
+                }
+            });
+            counter.innerText = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlides();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlides();
+            }
+        }
+
+        // Controles por teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Efecto Cursor Glow (Luz ambiental siguiendo el ratón)
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // Efecto Vanilla JS 3D Tilt para tarjetas cristalizadas
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; 
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Rotación basada en la posición del ratón
+                const rotateX = ((y - centerY) / centerY) * -10; // Max rotación: 10deg
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+            });
+        });
+
+        // Inicializar
+        updateSlides();
+    </script>
+</body>
+</html>

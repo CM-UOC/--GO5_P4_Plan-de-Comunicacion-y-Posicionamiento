@@ -8,9 +8,9 @@
     <!-- Google Fonts Premium -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700;900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome -->
+    <!-- FontAwesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -52,8 +52,8 @@
 
         .medusa {
             position: absolute; border-radius: 50%; 
-            filter: blur(160px); /* Difuminado muy fuerte */
-            opacity: 0.8; mix-blend-mode: screen;
+            filter: blur(160px); 
+            opacity: 0.85; mix-blend-mode: screen;
             animation: medusa-float 30s infinite alternate ease-in-out, medusa-color 40s infinite linear;
             pointer-events: none;
         }
@@ -85,7 +85,7 @@
         }
 
         /* =========================================================
-           3. TARJA MADRE FIJA Y SLIDES
+           3. TARJA MADRE FIJA & SLIDES
            ========================================================= */
         .deck {
             position: relative; width: 100vw; height: 100vh;
@@ -96,8 +96,8 @@
         .mother-board {
             width: 100%; height: 100%; max-width: 1400px; max-height: 820px;
             background: var(--glass);
-            backdrop-filter: blur(50px) saturate(150%);
-            -webkit-backdrop-filter: blur(50px) saturate(150%);
+            backdrop-filter: blur(60px) saturate(150%);
+            -webkit-backdrop-filter: blur(60px) saturate(150%);
             border-radius: 40px; 
             border: 1px solid var(--border);
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(255,255,255,0.02);
@@ -105,87 +105,173 @@
             display: flex; flex-direction: column;
         }
 
+        /* AJUSTE ESTRUCTURAL CLAVE */
         .slide {
-            position: absolute; inset: 0; padding: 50px 80px;
-            display: none; flex-direction: column; justify-content: center;
-            opacity: 0; transform: scale(0.95) translateY(20px);
-            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            position: absolute; inset: 0; padding: 140px 80px 60px 80px;
+            display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+            opacity: 0; transform: scale(0.97) translateY(20px);
+            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            visibility: hidden; pointer-events: none;
         }
 
         .slide.active {
-            display: flex; opacity: 1; transform: scale(1) translateY(0);
-            z-index: 10;
+            opacity: 1; transform: scale(1) translateY(0);
+            z-index: 10; visibility: visible; pointer-events: auto;
         }
 
+        .slide-content { width: 100%; display: flex; flex-direction: column; }
+
         /* =========================================================
-           4. TIPOGRAFÍA Y COMPONENTES ENRIQUECIDOS
+           4. TÍTULOS FIJOS (ARRIBA IZQUIERDA) & TIPOGRAFÍA
            ========================================================= */
         h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; color: #fff; line-height: 1.2; }
-        .slide-title { font-size: 42px; font-weight: 900; margin-bottom: 30px; letter-spacing: -1px; border-left: 6px solid #fff; padding-left: 20px; text-transform: uppercase; }
+        
+        /* Título Fijo Top Left */
+        .slide-title { 
+            position: absolute; 
+            top: 50px; 
+            left: 80px; 
+            font-size: 38px; 
+            font-weight: 900; 
+            text-align: left;
+            letter-spacing: -1px; 
+            border-left: 6px solid #fff; 
+            padding-left: 25px; 
+            text-transform: uppercase; 
+            margin: 0;
+            z-index: 20;
+            max-width: 60%;
+        }
+
         p, li { font-size: 17px; line-height: 1.6; color: #cbd5e1; font-weight: 300; }
         strong { color: #fff; font-weight: 600; }
         
         .p4-tag { color: var(--c-blue); font-weight: 900; margin-right: 15px; text-shadow: 0 0 15px rgba(59, 130, 246, 0.8); }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; align-items: center; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; }
+        /* Componentes Estructurales Fluidos */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; align-items: stretch; height: 100%;}
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; width: 100%; align-items: stretch;}
 
+        /* Tarjetas 3D Tilt - Distribución Perfecta */
         .tilt-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px; padding: 30px;
-            transition: border-color 0.4s, background 0.4s;
+            border-radius: 28px; padding: 40px;
+            transition: border-color 0.4s, background 0.4s, transform 0.1s ease-out;
             transform-style: preserve-3d;
-            height: 100%;
+            height: 100%; display: flex; flex-direction: column; justify-content: center;
         }
         .tilt-card:hover { border-color: rgba(255,255,255,0.4); background: rgba(255, 255, 255, 0.06); }
-        .tilt-card h4 { font-size: 20px; margin-bottom: 12px; color: #fff; }
+        .tilt-card h4 { font-size: 24px; margin-bottom: 15px; color: #fff; }
 
-        .icon-box { font-size: 32px; margin-bottom: 15px; color: var(--c-blue); text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+        .icon-box { font-size: 38px; margin-bottom: 20px; color: var(--c-blue); text-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
 
-        /* Índice Interactivo */
+        .img-glass {
+            border-radius: 28px; overflow: hidden; height: 100%; width: 100%;
+            border: 1px solid var(--border); box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .img-glass img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9); transition: 0.8s;}
+        .img-glass:hover img { transform: scale(1.05); }
+
+        /* =========================================================
+           5. ÍNDICE INTERACTIVO ALINEADO
+           ========================================================= */
         .index-link {
-            display: flex; align-items: center; gap: 15px; padding: 15px 20px;
-            background: rgba(255,255,255,0.02); border: 1px solid transparent;
-            border-radius: 12px; cursor: pointer; transition: 0.3s;
-            color: #e2e8f0; font-weight: 600; font-size: 18px; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 20px; padding: 20px 30px;
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px; cursor: pointer; transition: 0.3s;
+            color: #e2e8f0; font-weight: 600; font-size: 20px;
+            flex: 1; margin-bottom: 15px;
         }
         .index-link:hover {
-            background: rgba(255,255,255,0.1); border-color: var(--border);
-            transform: translateX(10px); color: #fff;
+            background: rgba(255,255,255,0.1); border-color: var(--c-blue);
+            transform: translateX(10px); color: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-        .index-link i { color: var(--c-blue); font-size: 24px; width: 30px; text-align: center;}
+        .index-link:last-child { margin-bottom: 0; }
+        .index-link i { color: var(--c-blue); font-size: 28px; width: 40px; text-align: center;}
 
-        /* Tablas para Cronograma */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { text-align: left; padding: 15px; color: var(--c-blue); font-size: 14px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.2); }
-        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px;}
+        /* =========================================================
+           6. ROADMAP GRÁFICO (RENOVADO Y LUMINOSO)
+           ========================================================= */
+        .roadmap-container {
+            position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: space-between;
+        }
+        .roadmap-line {
+            position: absolute; top: 50%; left: 0; right: 0; height: 6px;
+            background: linear-gradient(90deg, var(--c-blue), var(--c-purple), var(--c-green), var(--c-pink));
+            transform: translateY(-50%); border-radius: 3px; z-index: 1;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        .roadmap-node {
+            position: relative; z-index: 2; width: 22%; display: flex; flex-direction: column; align-items: center;
+        }
+        .node-point {
+            width: 35px; height: 35px; background: rgba(255,255,255,0.9); border-radius: 50%;
+            border: 6px solid #fff; box-shadow: 0 0 25px rgba(255,255,255,0.5);
+            margin: 20px 0; transition: 0.3s;
+        }
+        .roadmap-node:hover .node-point { transform: scale(1.3); background: #fff; }
+        .node-card {
+            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 25px;
+            text-align: center; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        .roadmap-node:hover .node-card { transform: translateY(-5px); border-color: #fff; background: rgba(255,255,255,0.12); }
+        .node-up { margin-bottom: 20px; border-bottom: 4px solid var(--c-blue); }
+        .node-down { margin-top: 20px; border-top: 4px solid var(--c-purple); }
 
-        /* Navegación */
+        .neon-table { width: 100%; border-collapse: separate; border-spacing: 0 12px; margin-top: 10px; }
+        .neon-table th { text-align: left; padding: 15px 25px; color: var(--c-blue); font-size: 14px; text-transform: uppercase; letter-spacing: 2px; }
+        .neon-table tbody tr {
+            background: rgba(255,255,255,0.02);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .neon-table td { padding: 22px 25px; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 16px; color: #e2e8f0;}
+        .neon-table td:first-child { border-left: 3px solid transparent; border-radius: 15px 0 0 15px; font-weight: 700; color: #fff; width: 15%;}
+        .neon-table td:nth-child(2) { color: var(--c-blue); font-weight: 600; width: 30%;}
+        .neon-table td:last-child { border-right: 1px solid rgba(255,255,255,0.05); border-radius: 0 15px 15px 0; }
+        
+        .neon-table tbody tr:hover {
+            transform: scale(1.02);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        .neon-table tbody tr:hover td:first-child { border-left-color: var(--c-blue); }
+
+        /* =========================================================
+           7. NAVEGACIÓN
+           ========================================================= */
         .controls {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 20px; align-items: center; z-index: 100;
-            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
+            display: flex; gap: 20px; align-items: center; z-index: 9999;
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px);
             padding: 10px 30px; border-radius: 50px; border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
         }
         .btn-nav {
-            background: none; border: 1px solid rgba(255,255,255,0.2); color: #fff;
-            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; justify-content: center; font-size: 16px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff;
+            width: 45px; height: 45px; border-radius: 50%; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; font-size: 18px; pointer-events: auto;
         }
         .btn-nav:hover { background: #fff; color: #000; box-shadow: 0 0 15px #fff; transform: scale(1.1); }
-        #counter { font-family: 'Montserrat', sans-serif; font-weight: 800; color: #fff; font-size: 14px; min-width: 60px; text-align: center; }
+        #counter { font-family: 'Montserrat', sans-serif; font-weight: 800; color: #fff; font-size: 16px; min-width: 60px; text-align: center; }
 
+        /* Animaciones internas */
         .stagger { opacity: 0; transform: translateY(20px); transition: 0.6s ease-out; }
         .slide.active .stagger { opacity: 1; transform: translateY(0); }
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
+
     </style>
 </head>
 <body>
 
-    <!-- FONDO MEDUSA NEÓN -->
+    <!-- FONDO MEDUSA ANIMADO -->
     <div class="liquid-bg">
         <div class="medusa m-1"></div>
         <div class="medusa m-2"></div>
@@ -196,51 +282,78 @@
     <div class="deck">
         <div class="mother-board">
 
-            <!-- SLIDE 1: PORTADA -->
-            <div class="slide active" id="s-0">
-                <div style="text-align: center; max-width: 900px; margin: 0 auto;">
-                    <div class="stagger" style="display:inline-block; border: 1px solid #fff; padding: 8px 30px; border-radius: 50px; font-weight: 800; letter-spacing: 5px; margin-bottom: 30px; font-size: 14px; color: #fff;">GRUPO GO5</div>
-                    <h1 class="stagger delay-1" style="font-size: 75px; margin-bottom: 20px; line-height: 1.1;"><span class="p4-tag">P4</span> Plan de Comunicación<br>y Posicionamiento</h1>
-                    <div class="stagger delay-2" style="width: 100px; height: 5px; background: #fff; margin: 30px auto; border-radius: 3px;"></div>
-                    <p class="stagger delay-3" style="font-size: 24px; color: #fff; line-height: 1.4;"><strong>PROYECTO:</strong> Estudio de mercado Internacional para expandir mis Ventas.</p>
+            <!-- SLIDE 1: PORTADA CINEMATOGRÁFICA -->
+            <div class="slide active" id="s-0" style="padding: 60px; align-items: center;">
+                <div class="slide-content" style="align-items: center; justify-content: center;">
+                    <div class="stagger" style="display:inline-block; border: 1px solid rgba(255,255,255,0.5); padding: 10px 35px; border-radius: 50px; font-weight: 800; letter-spacing: 6px; margin-bottom: 40px; font-size: 16px; color: #fff; box-shadow: 0 0 30px rgba(255,255,255,0.1);">GRUPO GO5</div>
+                    
+                    <h1 class="stagger delay-1" style="font-size: 90px; margin-bottom: 25px; line-height: 1.1; letter-spacing: -2px; text-transform: uppercase; text-align: center;">
+                        <span class="p4-tag" style="font-size: 110px;">P4</span><br>
+                        <span style="font-weight: 300; font-size: 70px; letter-spacing: 2px;">Plan de Comunicación</span><br>
+                        y Posicionamiento
+                    </h1>
+                    
+                    <div class="stagger delay-2" style="width: 150px; height: 6px; background: #fff; margin: 40px auto; border-radius: 3px; box-shadow: 0 0 20px rgba(255,255,255,0.5);"></div>
+                    <p class="stagger delay-3" style="font-size: 26px; color: #cbd5e1; line-height: 1.5; font-weight: 300; max-width: 900px; text-align: center;">
+                        <strong>PROYECTO:</strong> Estudio de mercado Internacional para expandir mis Ventas.
+                    </p>
                 </div>
             </div>
 
-            <!-- SLIDE 2: ÍNDICE INTERACTIVO -->
+            <!-- SLIDE 2: ÍNDICE ALINEADO -->
             <div class="slide" id="s-1">
-                <h2 class="slide-title stagger">Índice de Contenidos</h2>
-                <div class="grid-2 stagger delay-1">
-                    <div>
-                        <div class="index-link" onclick="goToSlide(2)"><i class="fa-solid fa-bullseye"></i> Estrategia de posicionamiento de marca</div>
-                        <div class="index-link" onclick="goToSlide(4)"><i class="fa-solid fa-users-viewfinder"></i> Target / Público objetivo</div>
-                        <div class="index-link" onclick="goToSlide(6)"><i class="fa-solid fa-map-location-dot"></i> Segmentación geográfica</div>
-                        <div class="index-link" onclick="goToSlide(7)"><i class="fa-solid fa-comment-dots"></i> Mensaje objetivo y de comunicación</div>
+                <h2 class="slide-title">Índice de Contenidos</h2>
+                <div class="slide-content grid-2 stagger delay-1">
+                    <!-- Tarjeta Izquierda -->
+                    <div class="tilt-card" style="padding: 40px; display: flex; flex-direction: column;">
+                        <div class="index-link" data-slide="2">
+                            <i class="fa-solid fa-bullseye"></i> Estrategia de posicionamiento de marca
+                        </div>
+                        <div class="index-link" data-slide="4">
+                            <i class="fa-solid fa-users-viewfinder"></i> Target / público objetivo
+                        </div>
+                        <div class="index-link" data-slide="6">
+                            <i class="fa-solid fa-map-location-dot"></i> Segmentación geográfica
+                        </div>
+                        <div class="index-link" data-slide="7">
+                            <i class="fa-solid fa-comment-dots"></i> Mensaje objetivo y de comunicación
+                        </div>
                     </div>
-                    <div>
-                        <div class="index-link" onclick="goToSlide(8)"><i class="fa-solid fa-tower-cell"></i> Medios y canales de comunicación</div>
-                        <div class="index-link" onclick="goToSlide(12)"><i class="fa-solid fa-calendar-days"></i> Cronograma de actuación anual</div>
-                        <div class="index-link" onclick="goToSlide(13)"><i class="fa-solid fa-chart-pie"></i> Evaluación y medición</div>
+                    <!-- Tarjeta Derecha -->
+                    <div class="tilt-card" style="padding: 40px; display: flex; flex-direction: column;">
+                        <div class="index-link" data-slide="8">
+                            <i class="fa-solid fa-tower-cell"></i> Medios y canales de comunicación (On)
+                        </div>
+                        <div class="index-link" data-slide="9">
+                            <i class="fa-solid fa-store"></i> Medios y canales de comunicación (Off)
+                        </div>
+                        <div class="index-link" data-slide="11">
+                            <i class="fa-solid fa-calendar-days"></i> Cronograma de actuación anual
+                        </div>
+                        <div class="index-link" data-slide="13">
+                            <i class="fa-solid fa-chart-pie"></i> Evaluación y medición
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- SLIDE 3: ESTRATEGIA DE POSICIONAMIENTO 1 -->
             <div class="slide" id="s-2">
-                <h2 class="slide-title stagger">Estrategia de Posicionamiento de Marca</h2>
-                <div class="grid-2">
-                    <div class="stagger delay-1">
-                        <p style="margin-bottom: 20px;">Nuestra imagen de marca a <strong>medio y largo plazo</strong> se aleja del <em>low cost</em> y del lujo inaccesible. Ocuparemos el espacio de la <strong>gama media/media-alta</strong>, como la opción inteligente para Chile.</p>
-                        <div class="tilt-card" style="border-left: 4px solid var(--c-blue); padding: 20px;">
-                            <h4 style="margin-bottom: 5px; color: var(--c-blue);">Visión de Marca</h4>
-                            <p style="font-size: 16px;">Ser el líder indiscutible en la democratización tecnológica de la movilidad eléctrica urbana, brindando total fiabilidad.</p>
+                <h2 class="slide-title">Estrategia de posicionamiento de marca</h2>
+                <div class="slide-content grid-2">
+                    <div class="stagger delay-1" style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                        <p style="margin-bottom: 30px; font-size: 21px;">Nuestra imagen de marca a <strong>medio y largo plazo</strong> se aleja del <em>low cost</em> asiático y del lujo inaccesible. Ocuparemos el espacio de la <strong>gama media/media-alta</strong>, como la opción inteligente para Chile.</p>
+                        <div class="tilt-card" style="border-left: 6px solid var(--c-blue); padding: 30px; height: auto;">
+                            <h4 style="margin-bottom: 10px; color: var(--c-blue); font-size: 24px;">Concepto Fuerza</h4>
+                            <h3 style="font-size: 30px; font-style: italic; line-height: 1.3;">"Movilidad eléctrica sostenible para el futuro urbano de Chile"</h3>
                         </div>
                     </div>
                     <div class="tilt-card stagger delay-2">
-                        <h4>Atributos a Proyectar</h4>
-                        <ul style="list-style: none; line-height: 1.8; margin-top: 15px;">
-                            <li><i class="fa-solid fa-leaf icon-box" style="font-size:18px;"></i> <strong>Sostenibilidad Práctica:</strong> Cero emisiones combinadas con un menor coste operativo real.</li>
-                            <li><i class="fa-solid fa-microchip icon-box" style="font-size:18px;"></i> <strong>Innovación Útil:</strong> Tecnología integrada sin complicaciones.</li>
-                            <li><i class="fa-solid fa-shield-halved icon-box" style="font-size:18px;"></i> <strong>Seguridad Europea:</strong> Respaldo total en la postventa.</li>
+                        <h4 style="font-size: 28px; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">Atributos Proyectados</h4>
+                        <ul style="list-style: none; line-height: 2.2; margin-top: 15px; font-size: 19px;">
+                            <li style="margin-bottom: 15px;"><i class="fa-solid fa-leaf icon-box" style="font-size:24px; width: 40px; margin:0;"></i> <strong>Sostenibilidad Práctica:</strong> Emisiones cero con ahorro operativo real.</li>
+                            <li style="margin-bottom: 15px;"><i class="fa-solid fa-microchip icon-box" style="font-size:24px; width: 40px; margin:0;"></i> <strong>Tecnología Útil:</strong> Autonomía conectada, sin complicaciones.</li>
+                            <li><i class="fa-solid fa-shield-halved icon-box" style="font-size:24px; width: 40px; margin:0;"></i> <strong>Confianza:</strong> Respaldo europeo en postventa y garantías.</li>
                         </ul>
                     </div>
                 </div>
@@ -248,261 +361,306 @@
 
             <!-- SLIDE 4: ESTRATEGIA DE POSICIONAMIENTO 2 -->
             <div class="slide" id="s-3">
-                <h2 class="slide-title stagger">Estrategia de Posicionamiento de Marca</h2>
-                <div class="grid-2">
-                    <div class="stagger delay-1">
-                        <h3 style="margin-bottom: 15px; font-size: 26px;">El enfoque de la Comunicación</h3>
-                        <p style="margin-bottom: 20px;">Todo el plan de comunicación irá enfocado a validar la decisión de compra desde la razón y la emoción.</p>
-                        <p>No comunicaremos "salvar al mundo", sino <strong>"optimizar tu vida diaria"</strong>. Los contenidos desmitificarán los miedos comunes (ansiedad de carga, degradación de batería, precio inicial) usando educación transparente y calculadoras de ahorro.</p>
+                <h2 class="slide-title">Estrategia de posicionamiento de marca</h2>
+                <div class="slide-content grid-2">
+                    <div class="img-glass stagger delay-1">
+                        <img src="https://images.unsplash.com/photo-1619682817481-e994891cd1f5?auto=format&fit=crop&q=80&w=1200" alt="Cliente en concesionaria interactuando con vehículo eléctrico">
                     </div>
-                    <div class="tilt-card stagger delay-2" style="background: rgba(255,255,255,0.05);">
-                        <i class="fa-solid fa-brain icon-box"></i>
-                        <h4>Valor Percibido (Largo Plazo)</h4>
-                        <p>El cliente de GO5 no compra solo un auto, invierte en la <strong>tranquilidad de un ecosistema completo</strong> (vehículo + cargador en casa + app de monitoreo + garantía extendida).</p>
+                    <div class="stagger delay-2" style="display: flex; flex-direction: column; justify-content: space-evenly; height: 100%;">
+                        <div class="tilt-card" style="height: auto;">
+                            <h4 style="color: var(--c-blue); font-size: 26px; margin-bottom: 15px;">A Medio Plazo (Año 1):</h4>
+                            <p>Ser percibidos como la marca que hace que la movilidad eléctrica sea <strong>viable, cercana y comprensible</strong> para el chileno, derribando activamente las barreras de precio inicial y carga.</p>
+                        </div>
+                        <div class="tilt-card" style="height: auto;">
+                            <h4 style="color: var(--c-purple); font-size: 26px; margin-bottom: 15px;">A Largo Plazo (Años 2-3):</h4>
+                            <p>Consolidarnos como la marca <strong>referente indiscutible</strong> en movilidad eléctrica responsable, eficiente y preparada para liderar el ecosistema urbano de Chile.</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- SLIDE 5: TARGET / PÚBLICO OBJETIVO (B2C) -->
+            <!-- SLIDE 5: TARGET B2C -->
             <div class="slide" id="s-4">
-                <h2 class="slide-title stagger">Target / Público Objetivo</h2>
-                <div class="grid-2">
+                <h2 class="slide-title">Target / público objetivo</h2>
+                <div class="slide-content grid-2">
                     <div class="tilt-card stagger delay-1">
-                        <h4 style="color: var(--c-blue);">Segmentación Consumidor Final (B2C)</h4>
-                        <p style="margin-top: 15px;"><strong>Demografía:</strong> Profesionales urbanos de entre 30 y 55 años. Segmento socioeconómico ABC1 y C1a (Ingresos medio-altos y altos).</p>
-                        <p style="margin-top: 10px;"><strong>Psicografía:</strong> <em>Smart Early Adopters</em>. Personas racionales y pragmáticas, que valoran el estatus moderno y la tecnología, pero basan sus compras en la optimización del ahorro (Coste Total de Propiedad).</p>
+                        <h4 style="color: var(--c-blue); font-size: 32px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">Consumidor Final (B2C)</h4>
+                        <p style="margin-top: 25px; font-size: 20px;"><strong>Demografía:</strong> Profesionales urbanos de entre 30 y 50 años. Segmento socioeconómico ABC1 y C1a (Ingresos medios-altos y altos).</p>
+                        <p style="margin-top: 20px; font-size: 20px;"><strong>Psicografía:</strong> <em>Early Adopters Racionales</em>. Valoran la innovación tecnológica y el estatus, pero su decisión final se basa en la optimización del <strong>ahorro mensual (TCO)</strong>.</p>
                     </div>
                     <div class="tilt-card stagger delay-2" style="border-color: var(--c-green);">
-                        <h4 style="color: var(--c-green);">¿A quién va dirigido?</h4>
-                        <p style="margin-top: 15px;">A individuos y familias que sufren el tráfico diario urbano, pagan altos costos de combustible y desean un estilo de vida más limpio y silencioso, disponiendo de parking privado para instalación de carga.</p>
+                        <h4 style="color: var(--c-green); font-size: 32px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">¿A quién va dirigido?</h4>
+                        <p style="margin-top: 25px; font-size: 20px;">A individuos y familias ecológicamente conscientes que sufren el tráfico diario urbano, pagan altos costos de combustible y desean un estilo de vida más limpio.</p>
+                        <p style="margin-top: 20px; font-size: 20px;"><strong>Requisito clave:</strong> Poseen estacionamiento privado, facilitando la instalación de carga.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- SLIDE 6: TARGET / PÚBLICO OBJETIVO (B2B) -->
+            <!-- SLIDE 6: TARGET B2B -->
             <div class="slide" id="s-5">
-                <h2 class="slide-title stagger">Target / Público Objetivo</h2>
-                <div class="grid-2">
-                    <div class="stagger delay-1">
-                        <h3 style="margin-bottom: 20px; font-size: 26px;">Segmentación Corporativa (B2B)</h3>
-                        <p>Además del cliente final, GO5 atacará un segundo mercado altamente rentable y de volumen.</p>
-                        <ul style="list-style: none; line-height: 2; margin-top: 20px;">
-                            <li><i class="fa-solid fa-truck-fast icon-box" style="font-size:20px; color:var(--c-purple);"></i> <strong>Logística Urbana:</strong> Reparto de última milla que requiere reducir su costo por kilómetro.</li>
-                            <li><i class="fa-solid fa-building icon-box" style="font-size:20px; color:var(--c-purple);"></i> <strong>Flotas Ejecutivas:</strong> Empresas con metas de cumplimiento de normativas medioambientales (ESG).</li>
+                <h2 class="slide-title">Target / público objetivo</h2>
+                <div class="slide-content grid-2">
+                    <div class="stagger delay-1" style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                        <h3 style="margin-bottom: 30px; font-size: 38px;">Segmentación Corporativa (B2B)</h3>
+                        <p style="font-size: 21px;">El segmento empresarial representa una oportunidad de volumen crítica para escalar la operación en Chile. Atacaremos a empresas que buscan reducir su OPEX.</p>
+                        <ul style="list-style: none; line-height: 2.2; margin-top: 30px; font-size: 20px;">
+                            <li><i class="fa-solid fa-truck-fast icon-box" style="font-size:26px; color:var(--c-purple); width:45px; margin:0;"></i> <strong>Logística:</strong> Operadores de transporte.</li>
+                            <li style="margin-top: 15px;"><i class="fa-solid fa-building icon-box" style="font-size:26px; color:var(--c-purple); width:45px; margin:0;"></i> <strong>Corporativos:</strong> Flotas ejecutivas y minería.</li>
                         </ul>
                     </div>
                     <div class="tilt-card stagger delay-2">
-                        <h4>El Decisor B2B</h4>
-                        <p>Va dirigido a Gerentes de Operaciones y Directores de Sostenibilidad. La decisión se basa 100% en la rentabilidad, beneficios fiscales y servicio técnico garantizado para no detener su operativa.</p>
+                        <h4 style="font-size: 32px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">Motivación B2B</h4>
+                        <p style="margin-top: 25px; font-size: 20px;">Las empresas incorporan vehículos eléctricos motivadas por dos vectores principales:</p>
+                        <p style="margin-top: 20px; font-size: 20px;">1. <strong>Reducción de costos operativos</strong> drástica en mantenimiento y energía.<br><br>2. <strong>Objetivos ESG</strong> para fortalecer su imagen sustentable corporativa frente a licitaciones.</p>
                     </div>
                 </div>
             </div>
 
             <!-- SLIDE 7: SEGMENTACIÓN GEOGRÁFICA -->
             <div class="slide" id="s-6">
-                <h2 class="slide-title stagger">Segmentación Geográfica</h2>
-                <div class="grid-2">
-                    <div class="stagger delay-1">
-                        <p style="margin-bottom: 20px;"><strong>¿Dónde se realizará la acción?</strong> La incursión en Chile será progresiva para asegurar el soporte técnico y aprovechar la infraestructura existente.</p>
-                        <div class="tilt-card" style="border-left: 4px solid var(--c-green); padding: 20px;">
-                            <h4 style="color: var(--c-green); margin-bottom: 5px;">Foco Inicial: Santiago R.M. (40%)</h4>
-                            <p>Se concentra en comunas del sector oriente (Las Condes, Vitacura, Providencia, Lo Barnechea) donde reside el público ABC1 y donde está el 80% de la red pública de carga SEC.</p>
+                <h2 class="slide-title">Segmentación geográfica</h2>
+                <div class="slide-content grid-2 stagger delay-1">
+                    <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <p style="font-size: 22px; line-height: 1.5;"><strong>¿Dónde se realizará la acción?</strong> La incursión en Chile será progresiva, focalizándonos primero en zonas urbanas con mayor densidad poblacional y poder adquisitivo.</p>
+                        <div class="tilt-card" style="border-left: 6px solid var(--c-green); padding: 35px; background: rgba(16, 185, 129, 0.05); height: auto;">
+                            <h4 style="color: var(--c-green); margin-bottom: 15px; font-size: 30px;">Prioridad: Santiago R.M. (40%)</h4>
+                            <p style="font-size: 19px;">Concentra a la mayoría del target y posee la mejor infraestructura de carga SEC. Foco en comunas clave: <strong>Las Condes, Vitacura, Providencia, Lo Barnechea</strong>.</p>
                         </div>
                     </div>
                     <div class="tilt-card stagger delay-2">
-                        <h4>Expansión por Fases</h4>
-                        <ul style="list-style: none; line-height: 2; margin-top: 15px;">
-                            <li><strong>Fase 2: Valparaíso / Viña (25%)</strong> Expansión natural en la costa central.</li>
-                            <li><strong>Fase 3: Concepción (15%)</strong> Sur urbano y polo industrial clave para B2B.</li>
-                            <li><strong>Fase 4: Resto (20%)</strong> Destacando Antofagasta para acercamiento a la industria minera.</li>
+                        <h4 style="font-size: 32px; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 25px;">Expansión por Fases</h4>
+                        <ul style="list-style: none; font-size: 19px; line-height: 2.4;">
+                            <li><strong style="color:var(--c-cyan)">Fase 2: Valparaíso / Viña (25%)</strong> Alta presencia de profesionales; cercanía logística.</li>
+                            <li><strong style="color:var(--c-purple)">Fase 3: Concepción (15%)</strong> Sur urbano con fuerte actividad empresarial e innovación.</li>
+                            <li><strong style="color:var(--c-pink)">Fase 4: Antofagasta y Resto (20%)</strong> Norte de altos ingresos (Minería) y fuerte demanda B2B.</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- SLIDE 8: MENSAJE OBJETIVO Y COMUNICACIÓN -->
+            <!-- SLIDE 8: MENSAJE OBJETIVO -->
             <div class="slide" id="s-7">
-                <h2 class="slide-title stagger">Mensaje Objetivo y de Comunicación</h2>
-                <div class="grid-2">
-                    <div class="stagger delay-1">
-                        <h3 style="margin-bottom: 10px;">"El futuro se conduce eléctrico."</h3>
-                        <p style="margin-bottom: 20px; font-style: italic;">Conduce limpio, ahorra más y avanza sin complicaciones.</p>
-                        <p><strong>Objetivos de la comunicación:</strong></p>
-                        <ul style="list-style: none; line-height: 1.8; margin-top: 10px;">
-                            <li><strong>1. De Marca (Awareness):</strong> Dar a conocer a GO5 como la opción premium inteligente, generando notoriedad.</li>
-                            <li><strong>2. De Cobertura:</strong> Alcance masivo en las zonas de Santiago Oriente para educar sobre el Coste Total de Propiedad (TCO).</li>
-                        </ul>
-                    </div>
-                    <div class="tilt-card stagger delay-2">
-                        <h4>¿Qué acción se espera del target?</h4>
-                        <p>El objetivo táctico final de las campañas es lograr <strong>Conversión de Leads</strong>.</p>
-                        <p style="margin-top: 10px;">Se espera que el usuario visite la página web, utilice la "Calculadora de Ahorro" interactiva y termine rellenando un formulario para <strong>agendar un Test Drive presencial</strong>.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SLIDE 9: MEDIOS Y CANALES - INTRO Y ONLINE -->
-            <div class="slide" id="s-8">
-                <h2 class="slide-title stagger">Medios y Canales de Comunicación</h2>
-                <p class="stagger delay-1" style="margin-bottom: 30px;">Se utilizará una estrategia <strong>omnicanal (Online + Offline)</strong> justificada por el alto nivel de digitalización de nuestro target en las fases de investigación (Zero Moment of Truth) y la necesidad de probar físicamente el producto.</p>
-                <div class="grid-3 stagger delay-2">
-                    <div class="tilt-card">
-                        <i class="fa-solid fa-laptop-code icon-box"></i>
-                        <h4>Sitio Web & SEO</h4>
-                        <p style="font-size: 14px;"><strong>Argumento:</strong> Es el eje central. Alojaremos el catálogo, el configurador y la Calculadora de Ahorro. El SEO captará a los usuarios que buscan "coches eléctricos Chile".</p>
-                    </div>
-                    <div class="tilt-card">
-                        <i class="fa-brands fa-instagram icon-box"></i>
-                        <h4>RRSS e Influencers</h4>
-                        <p style="font-size: 14px;"><strong>Argumento:</strong> Instagram para estilo de vida y LinkedIn para flotas B2B. Influencers tech para reviews reales y desmitificar la "ansiedad de autonomía".</p>
-                    </div>
-                    <div class="tilt-card">
-                        <i class="fa-solid fa-envelope-open-text icon-box"></i>
-                        <h4>Newsletter & Apps</h4>
-                        <p style="font-size: 14px;"><strong>Argumento:</strong> Email marketing para maduración de leads. La App de marca servirá para fidelizar (localizar cargadores y programar mantenimientos).</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SLIDE 10: MEDIOS Y CANALES - ONLINE CONT. Y OFFLINE -->
-            <div class="slide" id="s-9">
-                <h2 class="slide-title stagger">Medios y Canales de Comunicación</h2>
-                <div class="grid-3 stagger delay-1">
-                    <div class="tilt-card">
-                        <i class="fa-brands fa-youtube icon-box"></i>
-                        <h4>Vídeo (YouTube)</h4>
-                        <p style="font-size: 14px;"><strong>Argumento:</strong> Formato ideal para educar. Mostraremos pruebas de conducción urbana reales en Santiago, evidenciando comodidad y ahorro frente a gasolineras.</p>
-                    </div>
-                    <div class="tilt-card" style="border-top: 4px solid var(--c-purple);">
-                        <i class="fa-solid fa-building icon-box" style="color:var(--c-purple)"></i>
-                        <h4>Vallas / Marquesinas</h4>
-                        <p style="font-size: 14px;"><strong>Argumento (Offline):</strong> Generan impacto y cobertura visual en vías principales y centros de negocios (El Golf, Ciudad Empresarial), reforzando el estatus.</p>
-                    </div>
-                    <div class="tilt-card" style="border-top: 4px solid var(--c-purple);">
-                        <i class="fa-solid fa-car-side icon-box" style="color:var(--c-purple)"></i>
-                        <h4>Eventos (Test Drives)</h4>
-                        <p style="font-size: 14px;"><strong>Argumento (Offline):</strong> El marketing directo definitivo. Activaciones en Malls premium (Parque Arauco) porque la tecnología eléctrica requiere prueba física para convencer al usuario.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SLIDE 11: CANALES OFFLINE ADICIONALES Y PR -->
-            <div class="slide" id="s-10">
-                <h2 class="slide-title stagger">Medios y Canales de Comunicación</h2>
-                <div class="grid-2">
+                <h2 class="slide-title">Mensaje objetivo y de comunicación</h2>
+                <div class="slide-content grid-2">
                     <div class="tilt-card stagger delay-1">
-                        <h4>Prensa y Revistas Especializadas</h4>
-                        <p style="font-size: 15px; margin-top: 10px;"><strong>Argumento (Offline):</strong> Apariciones en suplementos de motor, economía (Diario Financiero, El Mercurio) y revistas B2B. Aporta altísima credibilidad, autoridad corporativa y apoya la venta de flotas a empresas.</p>
+                        <h4 style="color:var(--c-blue); font-size: 22px;">Mensaje y Eslogan</h4>
+                        <h3 style="margin: 25px 0; font-size: 38px; font-style: italic; line-height: 1.3;">"El futuro se conduce eléctrico."</h3>
+                        <p><strong>Promesa:</strong> Conduce el futuro de Chile con cero emisiones directas, menor coste de uso y una experiencia pensada para la ciudad.</p>
                     </div>
-                    <div class="tilt-card stagger delay-2">
-                        <h4>Radio y Marketing Directo</h4>
-                        <p style="font-size: 15px; margin-top: 10px;"><strong>Argumento (Offline):</strong> Cuñas de radio en emisoras dirigidas al segmento ABC1 (Radio Duna, Infinita) durante horarios de alto tráfico (Drive Time) para recordar el dolor del gasto en combustible. SMS/Mail directo para invitar a clientes selectos a eventos VIP.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SLIDE 12: DIFERENCIADOR: ECO-BONUS 360 -->
-            <div class="slide" id="s-11">
-                <h2 class="slide-title stagger">El Diferenciador Operativo</h2>
-                <div class="grid-2">
-                    <div class="stagger delay-1">
-                        <p style="margin-bottom: 20px;">Todo el mensaje en los canales mencionados estará respaldado por nuestro programa estrella, diseñado para anular las barreras de entrada del mercado chileno.</p>
-                        <h3 style="color: var(--c-blue); font-size: 32px;">Programa Eco-Bonus 360</h3>
-                    </div>
-                    <div class="tilt-card stagger delay-2">
-                        <h4>Beneficios del Programa</h4>
-                        <ul style="list-style: none; line-height: 1.8; margin-top: 10px;">
-                            <li><i class="fa-solid fa-plug-circle-check icon-box" style="font-size:16px;"></i> <strong>Wallbox Incluido:</strong> Instalación de cargador domiciliario certificado por la SEC.</li>
-                            <li><i class="fa-solid fa-screwdriver-wrench icon-box" style="font-size:16px;"></i> <strong>Mantenimiento Preventivo:</strong> Plan de servicio simplificado.</li>
-                            <li><i class="fa-solid fa-people-group icon-box" style="font-size:16px;"></i> <strong>Comunidad "Ruta Cero":</strong> Beneficios exclusivos y referidos.</li>
+                    <div class="tilt-card stagger delay-2" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+                        <h4 style="margin-bottom: 25px; font-size: 30px;">Objetivos de la Comunicación:</h4>
+                        <ul style="list-style: none; line-height: 2.2; font-size: 19px;">
+                            <li style="margin-bottom: 15px;"><i class="fa-solid fa-eye" style="color:var(--c-blue); width:35px; font-size: 22px;"></i> <strong>Acción de Marca:</strong> Generar conocimiento y confianza, posicionándonos como referentes viables.</li>
+                            <li style="margin-bottom: 15px;"><i class="fa-solid fa-bullseye" style="color:var(--c-blue); width:35px; font-size: 22px;"></i> <strong>Acción de Cobertura:</strong> Educar al mercado sobre autonomía, carga y ahorro.</li>
+                            <li><i class="fa-solid fa-bolt" style="color:var(--c-blue); width:35px; font-size: 22px;"></i> <strong>Acción del Target:</strong> Captar leads y conseguir <strong>reservas para Test Drives</strong>.</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- SLIDE 13: CRONOGRAMA DE ACTUACIÓN ANUAL -->
+            <!-- SLIDE 9: MEDIOS ONLINE -->
+            <div class="slide" id="s-8">
+                <h2 class="slide-title">Medios y canales de comunicación (Online)</h2>
+                <div class="slide-content">
+                    <p class="stagger delay-1" style="margin-bottom: 40px; font-size: 22px;">Utilizaremos una estrategia omnicanal. Cada canal tiene una función concreta: captar, educar o convertir.</p>
+                    <div class="grid-3 stagger delay-2">
+                        <div class="tilt-card">
+                            <i class="fa-solid fa-laptop-code icon-box"></i>
+                            <h4 style="font-size: 24px;">Web & SEO</h4>
+                            <p style="font-size: 16px;"><strong>Argumento:</strong> Es el centro estratégico. El comprador investiga primero. Ofreceremos el configurador, reserva de Test Drives y la <strong>Calculadora TCO</strong>.</p>
+                        </div>
+                        <div class="tilt-card">
+                            <i class="fa-brands fa-instagram icon-box"></i>
+                            <h4 style="font-size: 24px;">RRSS & SEM</h4>
+                            <p style="font-size: 16px;"><strong>Argumento:</strong> Instagram comunicará estilo de vida y diseño. Google Ads (SEM) capturará búsquedas con intención activa de compra ("auto eléctrico precio").</p>
+                        </div>
+                        <div class="tilt-card">
+                            <i class="fa-brands fa-youtube icon-box"></i>
+                            <h4 style="font-size: 24px;">YouTube</h4>
+                            <p style="font-size: 16px;"><strong>Argumento:</strong> Exige demostración visual. Videos sobre carga en casa, autonomía real y reviews de expertos reducen la desconfianza técnica.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 10: MEDIOS OFFLINE -->
+            <div class="slide" id="s-9">
+                <h2 class="slide-title">Medios y canales de comunicación (Offline)</h2>
+                <div class="slide-content">
+                    <p class="stagger delay-1" style="margin-bottom: 40px; font-size: 22px;">La confianza definitiva se construye cuando el cliente <strong>prueba el vehículo</strong> en el mundo real.</p>
+                    <div class="grid-3 stagger delay-2">
+                        <div class="tilt-card" style="border-top: 5px solid var(--c-purple);">
+                            <i class="fa-solid fa-car-side icon-box" style="color:var(--c-purple)"></i>
+                            <h4 style="font-size: 24px;">Test Drives</h4>
+                            <p style="font-size: 16px;"><strong>Argumento (Offline):</strong> Pruebas en Malls premium y distritos financieros para transformar el interés digital en una experiencia física que cierre ventas.</p>
+                        </div>
+                        <div class="tilt-card" style="border-top: 5px solid var(--c-purple);">
+                            <i class="fa-solid fa-building icon-box" style="color:var(--c-purple)"></i>
+                            <h4 style="font-size: 24px;">Alianzas y OOH</h4>
+                            <p style="font-size: 16px;"><strong>Argumento (Offline):</strong> Presencia en parkings. Vallas geolocalizadas con QR ("Escanea y calcula tu ahorro") para impactar al usuario en su ruta diaria.</p>
+                        </div>
+                        <div class="tilt-card" style="border-top: 5px solid var(--c-purple);">
+                            <i class="fa-brands fa-linkedin icon-box" style="color:var(--c-purple)"></i>
+                            <h4 style="font-size: 24px;">Prensa B2B</h4>
+                            <p style="font-size: 16px;"><strong>Argumento (Offline):</strong> Notas de prensa en medios de economía (sectoriales) refuerzan la reputación y credibilidad institucional para vender flotas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 11: DIFERENCIADOR -->
+            <div class="slide" id="s-10">
+                <h2 class="slide-title">Diferencia Competitiva Exclusiva</h2>
+                <div class="slide-content grid-2">
+                    <div class="tilt-card stagger delay-1" style="border-left: 8px solid var(--c-green); padding: 50px;">
+                        <h3 style="font-size: 42px; color: var(--c-green); margin-bottom: 25px;">Eco-Bonus 360</h3>
+                        <p style="font-size: 20px;">Nuestra estrategia no es una guerra de precios. Es un ecosistema que convierte la sostenibilidad en un servicio integral.</p>
+                    </div>
+                    <div class="stagger delay-2" style="display: flex; flex-direction: column; justify-content: center; padding-left: 20px;">
+                        <ul style="list-style: none; line-height: 2.4; font-size: 20px;">
+                            <li style="margin-bottom: 10px;"><i class="fa-solid fa-plug-circle-check icon-box" style="font-size:26px; width:40px; margin:0;"></i> <strong>Wallbox Incluido:</strong> Facilita la carga en el hogar.</li>
+                            <li style="margin-bottom: 10px;"><i class="fa-solid fa-mobile-screen icon-box" style="font-size:26px; width:40px; margin:0;"></i> <strong>App de Conducción:</strong> Control de ahorro y emisiones.</li>
+                            <li style="margin-bottom: 10px;"><i class="fa-solid fa-screwdriver-wrench icon-box" style="font-size:26px; width:40px; margin:0;"></i> <strong>Mantenimiento Eléctrico:</strong> Reduce incertidumbre técnica.</li>
+                            <li><i class="fa-solid fa-people-group icon-box" style="font-size:26px; width:40px; margin:0;"></i> <strong>Comunidad "Ruta Cero":</strong> Fidelización y referidos.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 12: ROADMAP GRÁFICO 1 -->
+            <div class="slide" id="s-11">
+                <h2 class="slide-title">Cronograma de actuación anual (Semestre 1)</h2>
+                <div class="slide-content stagger delay-1">
+                    <div class="roadmap-container">
+                        <div class="roadmap-line"></div>
+                        
+                        <div class="roadmap-node">
+                            <div class="node-card node-up" style="border-bottom: 4px solid var(--c-blue);">
+                                <h4 style="color: var(--c-blue);">Mes 1-2</h4>
+                                <p style="font-size: 15px;">Lanzamiento Digital<br>"El futuro ya está en Chile"</p>
+                            </div>
+                            <div class="node-point" style="border-color: var(--c-blue); background: rgba(255,255,255,0.9); box-shadow: 0 0 20px var(--c-blue);"></div>
+                            <div style="height: 120px;"></div> <!-- Spacer -->
+                        </div>
+
+                        <div class="roadmap-node">
+                            <div style="height: 120px;"></div> <!-- Spacer -->
+                            <div class="node-point" style="border-color: var(--c-purple); background: rgba(255,255,255,0.9); box-shadow: 0 0 20px var(--c-purple);"></div>
+                            <div class="node-card node-down" style="border-top: 4px solid var(--c-purple);">
+                                <h4 style="color: var(--c-purple);">Mes 2-4</h4>
+                                <p style="font-size: 15px;">Experiencia Física<br>Test drives en Malls Premium</p>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-node">
+                            <div class="node-card node-up" style="border-bottom: 4px solid var(--c-green);">
+                                <h4 style="color: var(--c-green);">Mes 4-6</h4>
+                                <p style="font-size: 15px;">Educación de Mercado<br>Calculadora TCO y Ahorro</p>
+                            </div>
+                            <div class="node-point" style="border-color: var(--c-green); background: rgba(255,255,255,0.9); box-shadow: 0 0 20px var(--c-green);"></div>
+                            <div style="height: 120px;"></div> <!-- Spacer -->
+                        </div>
+                        
+                        <div class="roadmap-node">
+                            <div style="height: 120px;"></div> <!-- Spacer -->
+                            <div class="node-point" style="border-color: var(--c-pink); background: rgba(255,255,255,0.9); box-shadow: 0 0 20px var(--c-pink);"></div>
+                            <div class="node-card node-down" style="border-top: 4px solid var(--c-pink);">
+                                <h4 style="color: var(--c-pink);">Mes 6-7</h4>
+                                <p style="font-size: 15px;">Consolidación Q2<br>Cierre de primeros leads</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 13: ROADMAP GRÁFICO 2 -->
             <div class="slide" id="s-12">
-                <h2 class="slide-title stagger">Cronograma de Actuación Anual</h2>
-                <div class="stagger delay-1" style="width: 100%; border-radius: 20px; overflow: hidden; background: rgba(0,0,0,0.3); border: 1px solid var(--border);">
-                    <table>
-                        <thead>
-                            <tr style="background: rgba(15, 23, 42, 0.8);">
-                                <th style="width: 15%;">Periodo</th>
-                                <th style="width: 25%;">Objetivo / Etapa</th>
-                                <th style="width: 60%;">Acciones Promocionales Clave</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Q1 (Ene-Mar)</strong></td>
-                                <td style="color: var(--c-blue);">Lanzamiento / Awareness</td>
-                                <td>Campaña teaser Digital, Evento de Presentación a Prensa (Notas de prensa), Activación SEO/SEM, Vallas publicitarias.</td>
-                            </tr>
-                            <tr style="background: rgba(255,255,255,0.02);">
-                                <td><strong>Q2 (Abr-Jun)</strong></td>
-                                <td style="color: var(--c-blue);">Interés / Consideración</td>
-                                <td>Promoción "Calculadora TCO", Videos en YouTube (Reviews de Influencers Tech), Campaña de Flotas B2B (LinkedIn / Revistas).</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Q3 (Jul-Sep)</strong></td>
-                                <td style="color: var(--c-blue);">Prueba / Conversión</td>
-                                <td>Activaciones en Malls para Test Drives masivos. Remarketing agresivo con oferta Eco-Bonus 360 (Wallbox incluido).</td>
-                            </tr>
-                            <tr style="background: rgba(255,255,255,0.02);">
-                                <td><strong>Q4 (Oct-Dic)</strong></td>
-                                <td style="color: var(--c-blue);">Cierre y Fidelización</td>
-                                <td>Lanzamiento App y Comunidad Ruta Cero. Programa de referidos (Mailing / SMS). Promociones de cierre de año.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <h2 class="slide-title">Cronograma de actuación anual (Semestre 2)</h2>
+                <div class="slide-content stagger delay-1">
+                    <div class="roadmap-container">
+                        <div class="roadmap-line" style="background: linear-gradient(90deg, var(--c-pink), var(--c-green), var(--c-purple), var(--c-blue));"></div>
+                        
+                        <div class="roadmap-node">
+                            <div style="height: 120px;"></div> <!-- Spacer -->
+                            <div class="node-point" style="border-color: var(--c-pink); background: rgba(255,255,255,0.9); box-shadow: 0 0 20px var(--c-pink);"></div>
+                            <div class="node-card node-down" style="border-top: 4px solid var(--c-pink);">
+                                <h4 style="color: var(--c-pink);">Mes 7-8</h4>
+                                <p style="font-size: 15px;">Aceleración B2B<br>LinkedIn y Flotas Corporativas</p>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-node">
+                            <div class="node-card node-up" style="border-bottom: 4px solid var(--c-green);">
+                                <h4 style="color: var(--c-green);">Mes 8-10</h4>
+                                <p style="font-size: 15px;">Conversión Final<br>Retargeting y Financiación</p>
+                            </div>
+                            <div class="node-point" style="border-color: var(--c-green); background: rgba(255,255,255,0.9); box-shadow: 0 0 20px var(--c-green);"></div>
+                            <div style="height: 120px;"></div> <!-- Spacer -->
+                        </div>
+
+                        <div class="roadmap-node">
+                            <div style="height: 120px;"></div> <!-- Spacer -->
+                            <div class="node-point" style="border-color: var(--c-purple); background: rgba(255,255,255,0.9); box-shadow: 0 0 20px var(--c-purple);"></div>
+                            <div class="node-card node-down" style="border-top: 4px solid var(--c-purple);">
+                                <h4 style="color: var(--c-purple);">Mes 10-11</h4>
+                                <p style="font-size: 15px;">Fidelización<br>Eco-Bonus 360 y Mantenimiento</p>
+                            </div>
+                        </div>
+                        
+                        <div class="roadmap-node">
+                            <div class="node-card node-up" style="border-bottom: 4px solid var(--c-blue);">
+                                <h4 style="color: var(--c-blue);">Mes 12</h4>
+                                <p style="font-size: 15px;">Comunidad<br>Ruta Cero y Referidos</p>
+                            </div>
+                            <div class="node-point" style="border-color: var(--c-blue); background: rgba(255,255,255,0.9); box-shadow: 0 0 20px var(--c-blue);"></div>
+                            <div style="height: 120px;"></div> <!-- Spacer -->
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- SLIDE 14: EVALUACIÓN Y MEDICIÓN (KPIs) -->
             <div class="slide" id="s-13">
-                <h2 class="slide-title stagger">Evaluación y Medición (KPIs)</h2>
-                <p class="stagger delay-1" style="margin-bottom: 20px;">¿Qué indicadores claves son necesarios para evaluar el éxito?</p>
-                <div class="grid-3 stagger delay-2">
-                    <div class="tilt-card" style="border-top: 4px solid var(--c-blue);">
-                        <h4>KPIs de Marca (Awareness)</h4>
-                        <ul style="list-style: none; line-height: 1.8; margin-top:10px; font-size: 15px;">
-                            <li>• Alcance e Impresiones totales.</li>
-                            <li>• Tasa de interacción (Engagement).</li>
-                            <li>• Tráfico orgánico al sitio web.</li>
-                        </ul>
-                    </div>
-                    <div class="tilt-card" style="border-top: 4px solid var(--c-purple);">
-                        <h4>KPIs de Conversión (Leads)</h4>
-                        <ul style="list-style: none; line-height: 1.8; margin-top:10px; font-size: 15px;">
-                            <li>• CPL (Coste Por Lead cualificado).</li>
-                            <li>• CTR (Click Through Rate) en Ads.</li>
-                            <li>• N.º de Test Drives agendados y asistidos.</li>
-                        </ul>
-                    </div>
-                    <div class="tilt-card" style="border-top: 4px solid var(--c-green);">
-                        <h4>KPIs de Negocio & Retención</h4>
-                        <ul style="list-style: none; line-height: 1.8; margin-top:10px; font-size: 15px;">
-                            <li>• ROI de la campaña (Ventas cerradas).</li>
-                            <li>• Tasa de descargas de la App GO5.</li>
-                            <li>• NPS (Satisfacción de los Test Drives).</li>
-                        </ul>
+                <h2 class="slide-title">Evaluación y medición</h2>
+                <div class="slide-content">
+                    <p class="stagger delay-1" style="margin-bottom: 40px; font-size: 21px;">La medición reflejará el avance real del consumidor dentro del funnel. Estas son las <strong>Metas Globales Orientativas (Año 1):</strong></p>
+                    <div class="grid-3 stagger delay-2">
+                        <div class="tilt-card" style="text-align: center; border-top: 5px solid var(--c-blue);">
+                            <h2 style="font-size: 65px; margin-bottom: 10px; color: var(--c-blue);">2.000</h2>
+                            <p style="font-size: 18px; font-weight: 600; color: #fff;">Leads Cualificados</p>
+                            <p style="font-size: 14px; margin-top: 15px;">Captados vía Web y Ads.</p>
+                        </div>
+                        <div class="tilt-card" style="text-align: center; border-top: 5px solid var(--c-purple);">
+                            <h2 style="font-size: 65px; margin-bottom: 10px; color: var(--c-purple);">350</h2>
+                            <p style="font-size: 18px; font-weight: 600; color: #fff;">Test Drives</p>
+                            <p style="font-size: 14px; margin-top: 15px;">Tasa Lead a Test Drive: 18%</p>
+                        </div>
+                        <div class="tilt-card" style="text-align: center; border-top: 5px solid var(--c-green);">
+                            <h2 style="font-size: 65px; margin-bottom: 10px; color: var(--c-green);">70</h2>
+                            <p style="font-size: 18px; font-weight: 600; color: #fff;">Ventas Unidades</p>
+                            <p style="font-size: 14px; margin-top: 15px;">Conversión Ideal: 15-25%</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- SLIDE 15: PERIODICIDAD DEL SEGUIMIENTO -->
             <div class="slide" id="s-14">
-                <h2 class="slide-title stagger">Evaluación y Medición</h2>
-                <div class="grid-2">
-                    <div class="stagger delay-1">
-                        <h3 style="margin-bottom: 20px; font-size: 32px;">Periodicidad de Análisis</h3>
-                        <p>El calendario de seguimiento se define de la siguiente manera para asegurar una optimización constante:</p>
+                <h2 class="slide-title">Evaluación y medición</h2>
+                <div class="slide-content grid-2">
+                    <div class="stagger delay-1" style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                        <h3 style="margin-bottom: 30px; font-size: 36px;">Periodicidad de Análisis</h3>
+                        <p style="font-size: 20px;">Implementaremos los siguientes análisis para garantizar la optimización:</p>
+                        <div style="margin-top: 40px; padding: 30px; background: rgba(6, 182, 212, 0.1); border-radius: 20px; border-left: 5px solid var(--c-blue);">
+                            <p style="margin:0; font-size: 18px;"><strong>Objetivo Financiero:</strong> Mantener un Coste Por Lead (CPL) inferior a 40 EUR y un NPS superior a 50 puntos.</p>
+                        </div>
                     </div>
                     <div class="tilt-card stagger delay-2">
-                        <ul style="list-style: none; line-height: 2.2;">
-                            <li><i class="fa-solid fa-clock icon-box" style="font-size:18px;"></i> <strong>Seguimiento Semanal:</strong> Revisión del rendimiento de Ads (CTR, CPL) y tráfico web para optimizar presupuestos en tiempo real.</li>
-                            <li><i class="fa-solid fa-calendar-week icon-box" style="font-size:18px;"></i> <strong>Análisis Mensual:</strong> Evaluación de conversión de Leads a Test Drives, alcance de PR y desempeño de Influencers.</li>
-                            <li><i class="fa-solid fa-chart-line icon-box" style="font-size:18px;"></i> <strong>Revisión Trimestral (Q):</strong> Medición del ROI final por canales, ventas cerradas y ajuste de la estrategia general según respuesta del mercado chileno.</li>
+                        <ul style="list-style: none; line-height: 2.5; font-size: 18px;">
+                            <li><i class="fa-solid fa-clock icon-box" style="font-size:22px; width:40px; margin:0;"></i> <strong>Semanal:</strong> Optimizar presupuesto en Ads (CTR, CPL) y tráfico web.</li>
+                            <li><i class="fa-solid fa-calendar-week icon-box" style="font-size:22px; width:40px; margin:0;"></i> <strong>Quincenal:</strong> Retención en YouTube y Email Open Rates.</li>
+                            <li><i class="fa-solid fa-calendar-days icon-box" style="font-size:22px; width:40px; margin:0;"></i> <strong>Mensual:</strong> Test Drives asistidos y ventas consolidadas.</li>
+                            <li><i class="fa-solid fa-chart-line icon-box" style="font-size:22px; width:40px; margin:0;"></i> <strong>Trimestral:</strong> Auditoría Estratégica. Evaluación del ROI y CAC.</li>
                         </ul>
                     </div>
                 </div>
@@ -511,68 +669,96 @@
         </div>
     </div>
 
-    <!-- CONTROLES -->
+    <!-- NAVEGACIÓN INFERIOR -->
     <div class="controls">
-        <button class="btn-nav" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="btn-nav" id="btn-prev"><i class="fa-solid fa-chevron-left"></i></button>
         <span id="counter">1 / 15</span>
-        <button class="btn-nav" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="btn-nav" id="btn-next"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
 
     <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const counter = document.getElementById('counter');
-        const cursorGlow = document.getElementById('cursorGlow');
+        document.addEventListener("DOMContentLoaded", () => {
+            const slides = document.querySelectorAll('.slide');
+            const counter = document.getElementById('counter');
+            const cursorGlow = document.getElementById('cursorGlow');
+            let currentSlide = 0;
 
-        function updateSlide() {
-            slides.forEach((s, i) => {
-                s.classList.toggle('active', i === currentSlide);
-            });
-            counter.innerText = `${currentSlide + 1} / ${slides.length}`;
-        }
-
-        function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateSlide(); } }
-        function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide(); } }
-        
-        // FUNCIÓN PARA EL ÍNDICE INTERACTIVO
-        function goToSlide(index) {
-            if (index >= 0 && index < slides.length) {
-                currentSlide = index;
-                updateSlide();
+            function updateSlide() {
+                slides.forEach((s, i) => {
+                    if (i === currentSlide) {
+                        s.classList.add('active');
+                        s.style.opacity = '1';
+                        s.style.visibility = 'visible';
+                        s.style.pointerEvents = 'auto';
+                        s.style.transform = 'scale(1) translateY(0)';
+                    } else {
+                        s.classList.remove('active');
+                        s.style.opacity = '0';
+                        s.style.visibility = 'hidden';
+                        s.style.pointerEvents = 'none';
+                        s.style.transform = 'scale(0.97) translateY(20px)';
+                    }
+                });
+                counter.innerText = `${currentSlide + 1} / ${slides.length}`;
             }
-        }
 
-        // LUZ DE CURSOR NEÓN
-        document.addEventListener('mousemove', (e) => {
-            cursorGlow.style.left = e.clientX + 'px';
-            cursorGlow.style.top = e.clientY + 'px';
-        });
-
-        // 3D TILT PARA TARJETAS
-        const cards = document.querySelectorAll('.tilt-card');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -12;
-                const rotateY = ((x - centerX) / centerX) * 12;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            document.getElementById('btn-next').addEventListener('click', () => {
+                if (currentSlide < slides.length - 1) { 
+                    currentSlide++; 
+                    updateSlide(); 
+                }
             });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+
+            document.getElementById('btn-prev').addEventListener('click', () => {
+                if (currentSlide > 0) { 
+                    currentSlide--; 
+                    updateSlide(); 
+                }
             });
-        });
 
-        // NAVEGACIÓN TECLADO
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        });
+            document.querySelectorAll('.index-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    const target = parseInt(link.getAttribute('data-slide'));
+                    if (!isNaN(target)) {
+                        currentSlide = target;
+                        updateSlide();
+                    }
+                });
+            });
 
-        updateSlide();
+            document.addEventListener('mousemove', (e) => {
+                cursorGlow.style.left = e.clientX + 'px';
+                cursorGlow.style.top = e.clientY + 'px';
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    if (currentSlide < slides.length - 1) { currentSlide++; updateSlide(); }
+                }
+                if (e.key === 'ArrowLeft') {
+                    if (currentSlide > 0) { currentSlide--; updateSlide(); }
+                }
+            });
+
+            const cards = document.querySelectorAll('.tilt-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -10;
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+                });
+            });
+
+            updateSlide();
+        });
     </script>
 </body>
 </html>
